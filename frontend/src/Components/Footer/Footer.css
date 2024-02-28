@@ -51,3 +51,28 @@
     height: 3px;
     background-color: #c7c7c7;
 }
+@media(max-width:800px) {
+    .footer {
+        gap: 20px;
+    }
+    .footer-logo {
+        gap: 10px;
+        align-items: end;
+    }
+    .footer-logo img {
+        width: 40px;
+    }
+    .footer-logo p{
+        font-size: 25px;
+    }
+    .footer-links {
+        gap: 10px;
+        font-size: 14px;
+    }
+    .footer-social-icon img {
+        width: 22px;
+    }
+    .footer-copyright {
+        font-size: 13px;
+    }
+}
