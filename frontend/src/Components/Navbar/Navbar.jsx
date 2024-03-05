@@ -2,7 +2,7 @@ import React from "react";
 import "./Navbar.css";
 import logo from "../Assets/logo.png";
 import cart_icon from "../Assets/cart_icon.png";
-import { useState, useContext, useRef } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ShopContext } from "../../Context/ShopContext";
 import nav_dropdown from "../Assets/nav_dropdown.png";
@@ -21,7 +21,12 @@ const Navbar = () => {
         <img src={logo} alt="" />
         <p>Faxhion</p>
       </div>
-      <img className="nav-dropdown" onClick={dropdownToggle} src={nav_dropdown} alt="" />
+      <img
+        className="nav-dropdown"
+        onClick={dropdownToggle}
+        src={nav_dropdown}
+        alt=""
+      />
       <ul className="nav-menu" ref={menuRef}>
         <li
           onClick={() => {
@@ -65,9 +70,20 @@ const Navbar = () => {
         </li>
       </ul>
       <div className="nav-login-cart">
-        <Link style={{ textDecoration: "none" }} to="/login">
-          <button>Login</button>
-        </Link>
+        {localStorage.getItem("auth-token") ? (
+          <button
+            onClick={() => {
+              localStorage.removeItem("auth-token");
+              window.location.replace("/");
+            }}
+          >
+            Logout
+          </button>
+        ) : (
+          <Link style={{ textDecoration: "none" }} to="/login">
+            <button>Login</button>
+          </Link>
+        )}
         <Link style={{ textDecoration: "none" }} to="/cart">
           <img src={cart_icon} alt="" />
         </Link>
