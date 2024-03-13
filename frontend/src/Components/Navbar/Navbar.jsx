@@ -30,10 +30,12 @@ const Navbar = () => {
   };
   return (
     <div className="navbar">
-      <div className="nav-logo">
-        <img src={logo} alt="" />
-        <p>Faxhion</p>
-      </div>
+      <Link style={{ textDecoration: "none" }} to="/">
+        <div className="nav-logo">
+          <img src={logo} alt="" />
+          <p>Faxhion</p>
+        </div>
+      </Link>
       <img
         className="nav-dropdown"
         onClick={dropdownToggle}

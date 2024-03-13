@@ -8,9 +8,24 @@ const LoginSignup = () => {
     email: "",
     password: "",
   });
+  const [disabled, setDisabled] = useState(false);
   const changeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const validateEmail = (email) => {
+    // Regex kiểm tra định dạng email của gmail
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail.com$/;
+    return emailRegex.test(String(email).toLowerCase());
+  };
+
+  const validatePassword = (password) => {
+    // Regex kiểm tra password có từ 8 đến 16 ký tự, ít nhất 1 ký tự viết hoa, 1 ký tự đặc biệt
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
+    return passwordRegex.test(password);
+  };
+
   const login = async () => {
     console.log("Login", formData);
     let resData;
@@ -33,6 +48,16 @@ const LoginSignup = () => {
     }
   };
   const signup = async () => {
+    if (!validateEmail(formData.email)) {
+      toast.error("Invalid email address");
+      return;
+    }
+    if (!validatePassword(formData.password)) {
+      toast.error(
+        "Password must be at least 8 characters long and contain 1 uppercase letter and 1 special character"
+      );
+      return;
+    }
     // console.log("Signup", formData);
     let resData;
     await fetch("http://localhost:4000/signup", {
@@ -89,6 +114,7 @@ const LoginSignup = () => {
           />
         </div>
         <button
+          className={disabled ? "enabled" : "disabled"}
           onClick={() => {
             state === "Login" ? login() : signup();
           }}
@@ -120,7 +146,15 @@ const LoginSignup = () => {
         )}
 
         <div className="loginsignup-agree">
-          <input type="checkbox" name="" id="" />
+          <input
+            type="checkbox"
+            name=""
+            id=""
+            checked={disabled}
+            onChange={() => {
+              setDisabled(!disabled);
+            }}
+          />
           <p>By continuing, i agree to the terms of use & privacy policy.</p>
         </div>
       </div>

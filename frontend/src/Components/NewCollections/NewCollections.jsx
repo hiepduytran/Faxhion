@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./NewCollections.css";
 import Item from "../Item/Item";
-const NewCollections = () => {
+const NewCollections = ({ forwardRef }) => {
   const [new_collections, setNewCollections] = useState([]);
   useEffect(() => {
     fetch("http://localhost:4000/new_collection")
@@ -11,7 +11,7 @@ const NewCollections = () => {
       });
   }, []);
   return (
-    <div className="new-collections">
+    <div className="new-collections" ref={forwardRef}>
       <h1>NEW COLLECTIONS</h1>
       <hr />
       <div className="collections">
