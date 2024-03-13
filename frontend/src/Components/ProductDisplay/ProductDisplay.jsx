@@ -3,12 +3,24 @@ import "./ProductDisplay.css";
 import star_icon from "../Assets/star_icon.png";
 import star_dull_icon from "../Assets/star_dull_icon.png";
 import { ShopContext } from "../../Context/ShopContext";
+import toast, { Toaster } from "react-hot-toast";
 
 const ProductDisplay = (props) => {
   const { product } = props;
   const { handleAddToCart } = useContext(ShopContext);
+
+  const addToCart = (productId) => {
+    const authToken = localStorage.getItem("auth-token");
+    if (!authToken) {
+      toast.error("Please login to add items to your cart");
+      return;
+    }
+    handleAddToCart(productId);
+  };
+
   return (
     <div className="productdisplay">
+      <Toaster />
       <div className="productdisplay-left">
         <div className="productdisplay-img-list">
           <img src={product.image} alt="" />
@@ -55,7 +67,7 @@ const ProductDisplay = (props) => {
         </div>
         <button
           onClick={() => {
-            handleAddToCart(product.id);
+            addToCart(product.id);
           }}
         >
           ADD TO CART
