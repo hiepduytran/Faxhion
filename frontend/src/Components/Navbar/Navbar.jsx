@@ -3,14 +3,27 @@ import "./Navbar.css";
 import logo from "../Assets/logo.png";
 import cart_icon from "../Assets/cart_icon.png";
 import { useState, useEffect, useContext, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ShopContext } from "../../Context/ShopContext";
 import nav_dropdown from "../Assets/nav_dropdown.png";
 
 const Navbar = () => {
   const [menu, setMenu] = useState("shop");
   const { getTotalCartItems } = useContext(ShopContext);
+  const location = useLocation();
   const menuRef = useRef(null);
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === "/") {
+      setMenu("shop");
+    } else if (path === "/men") {
+      setMenu("men");
+    } else if (path === "/women") {
+      setMenu("women");
+    } else if (path === "/kids") {
+      setMenu("kids");
+    }
+  }, [location.pathname]);
   const dropdownToggle = (e) => {
     menuRef.current.classList.toggle("nav-menu-visible");
     e.target.classList.toggle("open");
@@ -28,41 +41,25 @@ const Navbar = () => {
         alt=""
       />
       <ul className="nav-menu" ref={menuRef}>
-        <li
-          onClick={() => {
-            setMenu("shop");
-          }}
-        >
+        <li>
           <Link style={{ textDecoration: "none" }} to="/">
             Shop
           </Link>{" "}
           {menu === "shop" ? <hr /> : ""}
         </li>
-        <li
-          onClick={() => {
-            setMenu("men");
-          }}
-        >
+        <li>
           <Link style={{ textDecoration: "none" }} to="/men">
             Men
           </Link>{" "}
           {menu === "men" ? <hr /> : ""}
         </li>
-        <li
-          onClick={() => {
-            setMenu("women");
-          }}
-        >
+        <li>
           <Link style={{ textDecoration: "none" }} to="/women">
             Women
           </Link>{" "}
           {menu === "women" ? <hr /> : ""}
         </li>
-        <li
-          onClick={() => {
-            setMenu("kids");
-          }}
-        >
+        <li>
           <Link style={{ textDecoration: "none" }} to="/kids">
             Kids
           </Link>{" "}
