@@ -3,6 +3,7 @@ import "./CartItems.css";
 import { useContext } from "react";
 import { ShopContext } from "../../Context/ShopContext";
 import remove_icon from "../Assets/cart_cross_icon.png";
+import { Link } from "react-router-dom";
 const CartItems = () => {
   const { all_product, cartItems, handleRemoveFromCart, getTotalCartAmount } =
     useContext(ShopContext);
@@ -20,7 +21,7 @@ const CartItems = () => {
       {all_product.map((item) => {
         if (cartItems[item.id] > 0) {
           return (
-            <div>
+            <div key={item.id}>
               <div className="cartitems-format cartitems-format-main">
                 <img
                   className="cartitems-product-icon"
@@ -67,7 +68,9 @@ const CartItems = () => {
               <p>${getTotalCartAmount()}</p>
             </div>
           </div>
-          <button>PROCEED TO CHECKOUT</button>
+          <Link to='/checkout'>
+            <button>PROCEED TO CHECKOUT</button>
+          </Link>
         </div>
         <div className="cartitems-promocode">
           <p>If you have promo code, Enter it here</p>

@@ -88,6 +88,12 @@ const Users = mongoose.model("Users", {
   password: {
     type: String,
   },
+  phoneNumber: {
+    type: Number,
+  },
+  address: {
+    type: String,
+  },
   cartData: {
     type: Object,
   },
@@ -114,6 +120,8 @@ app.post("/signup", async (req, res) => {
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
+    phoneNumber: "0865213404",
+    address: "Ha Noi",
     cartData: cart,
   });
   await user.save();
@@ -168,6 +176,7 @@ const fetchUser = (req, res, next) => {
   } else {
     try {
       const data = jwt.verify(token, "secret_ecommerce");
+      // console.log(data);
       req.user = data.user;
       next();
     } catch (error) {
@@ -175,6 +184,60 @@ const fetchUser = (req, res, next) => {
     }
   }
 };
+
+// Creating Endpoint to get user data
+app.get("/get_user_data", fetchUser, async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const userData = await Users.findOne({ _id: userId });
+
+    if (!userData) {
+      return res.status(404).json({ success: false, errors: "User not found" });
+    }
+
+    res.json({ success: true, userData: userData });
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    res.status(500).json({ success: false, errors: "Internal server error" });
+  }
+});
+
+// Creating Endpoint to update user information
+app.post("/update_user_info", fetchUser, async (req, res) => {
+  try {
+    // Lấy thông tin người dùng từ yêu cầu
+    // const { phoneNumber, address } = req.body;
+    const phoneNumber = req.body.phoneNumber;
+    const address = req.body.address;
+    // console.log(phoneNumber, address);
+    // Lấy ID của người dùng từ middleware fetchUser
+    const userId = req.user.id;
+
+    let cart = {};
+    for (let i = 0; i < 300; i++) {
+      cart[i] = 0;
+    }
+
+    // Cập nhật thông tin người dùng trong cơ sở dữ liệu
+    await Users.findOneAndUpdate(
+      { _id: userId },
+      {
+        phoneNumber: phoneNumber,
+        address: address,
+        cartData: cart,
+      }
+    );
+
+    res.json({
+      success: true,
+      message: "User information updated successfully",
+    });
+  } catch (error) {
+    console.error("Error updating user information:", error);
+    res.status(500).json({ success: false, errors: "Internal server error" });
+  }
+});
 
 // Creating Endpoint for adding products in cartData
 app.post("/add_to_cart", fetchUser, async (req, res) => {

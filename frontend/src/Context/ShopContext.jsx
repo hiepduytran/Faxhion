@@ -12,16 +12,19 @@ const getDefaultCart = () => {
 
 const ShopContextProvider = (props) => {
   const [all_product, setAllProduct] = useState([]);
+  const [user, setUser] = useState({});
   const [cartItems, setCartItems] = useState(getDefaultCart()); // destructuring the state into cartItems and setCartItems
   //   console.log(cartItems);
   useEffect(() => {
-    fetch("http://localhost:4000/get_products")
+    fetch("http://localhost:4000/get_products") // fetching the products from the server
       .then((res) => res.json())
       .then((data) => {
         setAllProduct(data);
       });
+
     if (localStorage.getItem("auth-token")) {
       fetch("http://localhost:4000/get_cart", {
+        // fetching the cart data from the server
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -32,6 +35,24 @@ const ShopContextProvider = (props) => {
         .then((res) => res.json())
         .then((data) => {
           setCartItems(data);
+        });
+
+      fetch("http://localhost:4000/get_user_data", {
+        // fetching the user data from the server
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "auth-token": localStorage.getItem("auth-token"),
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          // console.log(data.userData);
+          setUser(data.userData);
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
         });
     }
   }, []);
@@ -49,7 +70,9 @@ const ShopContextProvider = (props) => {
         body: JSON.stringify({ itemID: itemID }),
       })
         .then((res) => res.json())
-        .then((data) => console.log(data));
+        .then((data) => {
+          // console.log(data)
+        });
     }
   };
   const handleRemoveFromCart = (itemID) => {
@@ -65,7 +88,9 @@ const ShopContextProvider = (props) => {
         body: JSON.stringify({ itemID: itemID }),
       })
         .then((res) => res.json())
-        .then((data) => console.log(data));
+        .then((data) => 
+        console.log(data)
+        );
     }
   };
   const getTotalCartAmount = () => {
@@ -91,6 +116,7 @@ const ShopContextProvider = (props) => {
   };
   const contextValue = {
     all_product,
+    user,
     cartItems,
     handleAddToCart,
     handleRemoveFromCart,
