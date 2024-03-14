@@ -7,6 +7,7 @@ const LoginSignup = () => {
     username: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
   const [disabled, setDisabled] = useState(false);
   const changeHandler = (e) => {
@@ -24,6 +25,10 @@ const LoginSignup = () => {
     const passwordRegex =
       /^(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
     return passwordRegex.test(password);
+  };
+
+  const passwordsMatch = () => {
+    return formData.password === formData.confirmPassword;
   };
 
   const login = async () => {
@@ -58,6 +63,10 @@ const LoginSignup = () => {
       );
       return;
     }
+    if (!passwordsMatch()) {
+      toast.error("Passwords do not match");
+      return;
+    }
     // console.log("Signup", formData);
     let resData;
     await fetch("http://localhost:4000/signup", {
@@ -84,9 +93,7 @@ const LoginSignup = () => {
       <div className="loginsignup-container">
         <h1>{state}</h1>
         <div className="loginsignup-fields">
-          {state === "Login" ? (
-            ""
-          ) : (
+          {state === "Signup" && (
             <input
               value={formData.username}
               onChange={changeHandler}
@@ -112,6 +119,16 @@ const LoginSignup = () => {
             id="password"
             placeholder="Password"
           />
+          {state === "Signup" && (
+            <input
+              value={formData.confirmPassword}
+              onChange={changeHandler}
+              type="password"
+              name="confirmPassword"
+              id="confirmPassword"
+              placeholder="Confirm Password"
+            />
+          )}
         </div>
         <button
           className={disabled ? "enabled" : "disabled"}
