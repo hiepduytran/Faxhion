@@ -1,6 +1,4 @@
-// Checkout.js
-
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./CSS/Checkout.css";
 import Paypal from "../Components/Paypal/Paypal";
 import { useContext } from "react";
@@ -25,7 +23,7 @@ const Checkout = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     toast.success("The information was successfully updated!");
 
     const data = {

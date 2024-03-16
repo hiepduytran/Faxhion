@@ -1,12 +1,26 @@
 import React from "react";
 import "./CartItems.css";
-import { useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { ShopContext } from "../../Context/ShopContext";
 import remove_icon from "../Assets/cart_cross_icon.png";
 import { Link } from "react-router-dom";
 const CartItems = () => {
-  const { all_product, cartItems, handleRemoveFromCart, getTotalCartAmount } =
-    useContext(ShopContext);
+  const {
+    all_product,
+    cartItems,
+    handleRemoveFromCart,
+    getTotalCartAmount,
+    getTotalCartItems,
+  } = useContext(ShopContext);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+  useEffect(() => {
+    if (getTotalCartItems() === 0) {
+      setIsButtonDisabled(true);
+    } else {
+      setIsButtonDisabled(false);
+    }
+  }, [getTotalCartItems]);
   return (
     <div className="cartitems">
       <div className="cartitems-format-main">
@@ -68,8 +82,8 @@ const CartItems = () => {
               <p>${getTotalCartAmount()}</p>
             </div>
           </div>
-          <Link to='/checkout'>
-            <button>PROCEED TO CHECKOUT</button>
+          <Link to="/checkout">
+            <button disabled={isButtonDisabled}>PROCEED TO CHECKOUT</button>
           </Link>
         </div>
         <div className="cartitems-promocode">
