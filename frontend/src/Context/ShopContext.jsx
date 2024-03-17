@@ -1,4 +1,5 @@
 import React, { useState, useEffect, createContext } from "react";
+import Loading from "../Components/Loading/Loading";
 
 export const ShopContext = createContext(null);
 
@@ -13,18 +14,21 @@ const getDefaultCart = () => {
 const ShopContextProvider = (props) => {
   const [all_product, setAllProduct] = useState([]);
   const [user, setUser] = useState({});
-  const [cartItems, setCartItems] = useState(getDefaultCart()); // destructuring the state into cartItems and setCartItems
-  //   console.log(cartItems);
+  const [cartItems, setCartItems] = useState(getDefaultCart());
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    fetch("http://localhost:4000/get_products") // fetching the products from the server
+    setLoading(true);
+
+    fetch("http://localhost:4000/get_products")
       .then((res) => res.json())
       .then((data) => {
         setAllProduct(data);
+        setLoading(false);
       });
 
     if (localStorage.getItem("auth-token")) {
       fetch("http://localhost:4000/get_cart", {
-        // fetching the cart data from the server
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -38,7 +42,6 @@ const ShopContextProvider = (props) => {
         });
 
       fetch("http://localhost:4000/get_user_data", {
-        // fetching the user data from the server
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -48,7 +51,6 @@ const ShopContextProvider = (props) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          // console.log(data.userData);
           setUser(data.userData);
         })
         .catch((error) => {
@@ -56,9 +58,9 @@ const ShopContextProvider = (props) => {
         });
     }
   }, []);
+
   const handleAddToCart = (itemID) => {
-    setCartItems((prev) => ({ ...prev, [itemID]: prev[itemID] + 1 })); // updating the state of cartItems (view)
-    // console.log(cartItems);
+    setCartItems((prev) => ({ ...prev, [itemID]: prev[itemID] + 1 }));
     if (localStorage.getItem("auth-token")) {
       fetch("http://localhost:4000/add_to_cart", {
         method: "POST",
@@ -75,8 +77,9 @@ const ShopContextProvider = (props) => {
         });
     }
   };
+
   const handleRemoveFromCart = (itemID) => {
-    setCartItems((prev) => ({ ...prev, [itemID]: prev[itemID] - 1 })); // updating the state of cartItems (view)
+    setCartItems((prev) => ({ ...prev, [itemID]: prev[itemID] - 1 }));
     if (localStorage.getItem("auth-token")) {
       fetch("http://localhost:4000/remove_from_cart", {
         method: "POST",
@@ -88,11 +91,10 @@ const ShopContextProvider = (props) => {
         body: JSON.stringify({ itemID: itemID }),
       })
         .then((res) => res.json())
-        .then((data) => 
-        console.log(data)
-        );
+        .then((data) => console.log(data));
     }
   };
+
   const getTotalCartAmount = () => {
     let totalAmount = 0;
     for (const item in cartItems) {
@@ -105,6 +107,7 @@ const ShopContextProvider = (props) => {
     }
     return totalAmount;
   };
+
   const getTotalCartItems = () => {
     let totalItems = 0;
     for (const item in cartItems) {
@@ -114,6 +117,7 @@ const ShopContextProvider = (props) => {
     }
     return totalItems;
   };
+
   const contextValue = {
     all_product,
     user,
@@ -123,6 +127,10 @@ const ShopContextProvider = (props) => {
     getTotalCartAmount,
     getTotalCartItems,
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <ShopContext.Provider value={contextValue}>
