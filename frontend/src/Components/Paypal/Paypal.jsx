@@ -10,7 +10,12 @@ import toast from "react-hot-toast";
 const style = { layout: "vertical" };
 
 // Custom component to wrap the PayPalButtons and show loading spinner
-const ButtonWrapper = ({ currency, showSpinner, amount }) => {
+const ButtonWrapper = ({
+  currency,
+  showSpinner,
+  amount,
+  handlePaymentSuccess,
+}) => {
   const [{ isPending, options }, dispatch] = usePayPalScriptReducer();
   useEffect(() => {
     dispatch({
@@ -35,15 +40,16 @@ const ButtonWrapper = ({ currency, showSpinner, amount }) => {
         onApprove={async (data, actions) => {
           return actions.order.capture().then(async (res) => {
             if (res.status === "COMPLETED") {
+              handlePaymentSuccess();
               toast.success("Payment successful!");
               setTimeout(() => {
                 window.location.replace("/");
-              }, 3000);
+              }, 2000);
             } else {
               toast.error("Payment failed!");
               setTimeout(() => {
                 window.location.replace("/");
-              }, 3000);
+              }, 2000);
             }
           });
         }}
@@ -52,13 +58,18 @@ const ButtonWrapper = ({ currency, showSpinner, amount }) => {
   );
 };
 
-export default function Paypal({ amount }) {
+export default function Paypal({ amount, handlePaymentSuccess }) {
   return (
     <div style={{ maxWidth: "750px", minHeight: "200px" }}>
       <PayPalScriptProvider
         options={{ clientId: "test", components: "buttons", currency: "USD" }}
       >
-        <ButtonWrapper currency={"USD"} amount={amount} showSpinner={false} />
+        <ButtonWrapper
+          currency={"USD"}
+          amount={amount}
+          handlePaymentSuccess={handlePaymentSuccess}
+          showSpinner={false}
+        />
       </PayPalScriptProvider>
     </div>
   );

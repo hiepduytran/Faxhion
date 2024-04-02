@@ -91,7 +91,9 @@ const ShopContextProvider = (props) => {
         body: JSON.stringify({ itemID: itemID }),
       })
         .then((res) => res.json())
-        .then((data) => console.log(data));
+        .then((data) => {
+          // console.log(data);
+        });
     }
   };
 
@@ -119,8 +121,8 @@ const ShopContextProvider = (props) => {
   };
 
   const contextValue = {
-    all_product,
     user,
+    all_product,
     cartItems,
     handleAddToCart,
     handleRemoveFromCart,

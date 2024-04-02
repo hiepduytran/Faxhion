@@ -103,6 +103,51 @@ const Users = mongoose.model("Users", {
   },
 });
 
+// Schema for Creating Orders
+const Order = mongoose.model("Order", {
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Users",
+  },
+  products: [
+    {
+      productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+      },
+      quantity: {
+        type: Number,
+        required: true,
+      },
+      price: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
+  total: {
+    type: Number,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  phoneNumber: {
+    type: Number,
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ["pending", "processing", "completed"],
+    default: "pending",
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
 // Creating Endpoint for registering
 app.post("/signup", async (req, res) => {
   let check = await Users.findOne({ email: req.body.email });
@@ -203,8 +248,8 @@ app.get("/get_user_data", fetchUser, async (req, res) => {
   }
 });
 
-// Creating Endpoint to update user information
-app.post("/update_user_info", fetchUser, async (req, res) => {
+// Creating Endpoint to update user data
+app.post("/update_user_data", fetchUser, async (req, res) => {
   try {
     // Lấy thông tin người dùng từ yêu cầu
     // const { phoneNumber, address } = req.body;
@@ -307,6 +352,33 @@ app.get("/get_products", async (req, res) => {
   let products = await Product.find({});
   res.json(products);
   // console.log("All products fetched");
+});
+
+// Creating Endpoint for placing an order
+app.post("/place_order", fetchUser, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { products, total, address, phoneNumber } = req.body;
+
+    const order = new Order({
+      user: userId,
+      products: products,
+      total: total,
+      address: address,
+      phoneNumber: phoneNumber,
+    });
+
+    await order.save();
+
+    res.json({
+      success: true,
+      message: "The order has been placed successfully",
+      // order: order,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ success: false, errors: "Error" });
+  }
 });
 
 app.listen(port, (error) => {
