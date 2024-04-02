@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import "./CSS/OrderList.css";
 
 const OrderList = () => {
   const [orders, setOrders] = useState([]);
@@ -30,17 +31,28 @@ const OrderList = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Order List</h1>
-      <ul>
+    <div className="order-list-container">
+      {" "}
+      {/* Thêm class cho container */}
+      <h1 className="order-list-title">Order List</h1>{" "}
+      {/* Thêm class cho tiêu đề */}
+      <ul className="order-list">
         {orders.map((order, index) => (
-          <li key={index}>
+          <li key={index} className="order-item">
+            {" "}
+            {/* Thêm class cho mỗi mục */}
             <Link
               to={`/order_detail/${order._id}`}
-              style={{ textDecoration: "none" }}
+              className="order-link" // Thêm class cho link
             >
-              <p>Order ID: {order._id}</p>
-              <p>Total: {order.total}</p>
+              <div className="order-info">
+                {" "}
+                {/* Thêm class cho thông tin đơn hàng */}
+                <h2>Order ID: {order._id}</h2>{" "}
+                {/* Thêm class cho tiêu đề đơn hàng */}
+                <p className="order-details">Total: {order.total}</p>{" "}
+                {/* Thêm class cho thông tin chi tiết đơn hàng */}
+              </div>
             </Link>
           </li>
         ))}

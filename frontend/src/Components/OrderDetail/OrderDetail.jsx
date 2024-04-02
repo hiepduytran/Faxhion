@@ -73,9 +73,21 @@ const OrderDetail = () => {
                 );
               })}
               <div className="orderdetail-down">
+                <div className="orderdetail-promocode">
+                  <p>If you have promo code, Enter it here</p>
+                  <div className="orderdetail-promobox">
+                    <input type="text" placeholder="Promo Code" />
+                    <button>Submit</button>
+                  </div>
+                </div>
                 <div className="orderdetail-total">
                   <h1>Cart Total</h1>
                   <div>
+                    <div className="orderdetail-total-item">
+                      <p>Status </p>
+                      <p>{order.status}</p>
+                    </div>
+                    <hr />
                     <div className="orderdetail-total-item">
                       <p>Subtotal</p>
                       <p>${order.total}</p>
@@ -92,17 +104,11 @@ const OrderDetail = () => {
                     </div>
                   </div>
                 </div>
-                <div className="orderdetail-promocode">
-                  <p>If you have promo code, Enter it here</p>
-                  <div className="orderdetail-promobox">
-                    <input type="text" placeholder="Promo Code" />
-                    <button>Submit</button>
-                  </div>
-                </div>
               </div>
             </div>
           );
         }
+        return null;
       })}
     </div>
   );
