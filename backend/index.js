@@ -115,6 +115,14 @@ const Order = mongoose.model("Order", {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Product",
       },
+      name: {
+        type: String,
+        required: true,
+      },
+      image: {
+        type: String,
+        required: true,
+      },
       quantity: {
         type: Number,
         required: true,
@@ -380,7 +388,17 @@ app.post("/place_order", fetchUser, async (req, res) => {
     res.status(500).json({ success: false, errors: "Error" });
   }
 });
-
+// Creating Endpoint for getting orders
+app.get("/get_orders", fetchUser, async (req, res) => {
+  try {
+    const userId = req.user.id; // Lấy ID của người dùng từ middleware fetchUser
+    const orders = await Order.find({ user: userId });
+    res.json({ success: true, orders: orders });
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ success: false, errors: "Internal server error" });
+  }
+});
 app.listen(port, (error) => {
   if (!error) {
     console.log("Server is running on port", port);

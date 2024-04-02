@@ -37,6 +37,8 @@ const Checkout = () => {
         if (product) {
           products.push({
             productId: product._id,
+            name: product.name,
+            image: product.image,
             quantity: cartItems[productId],
             price: product.new_price,
           });
