@@ -22,6 +22,7 @@ const ListProduct = () => {
       }),
     });
     await fetchAllProducts();
+    alert("Product removed successfully");
   };
   useEffect(() => {
     fetchAllProducts();

@@ -106,8 +106,14 @@ const Users = mongoose.model("Users", {
 // Schema for Creating Orders
 const Order = mongoose.model("Order", {
   user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Users",
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+    },
+    username: {
+      type: String,
+      required: true,
+    },
   },
   products: [
     {
@@ -181,6 +187,7 @@ app.post("/signup", async (req, res) => {
   const data = {
     user: {
       id: user.id,
+      username: user.username,
     },
   };
   const token = jwt.sign(data, "secret_ecommerce");
@@ -196,6 +203,7 @@ app.post("/login", async (req, res) => {
       const data = {
         user: {
           id: user.id,
+          username: user.username,
         },
       };
       const token = jwt.sign(data, "secret_ecommerce");
@@ -244,7 +252,6 @@ app.get("/get_user_data", fetchUser, async (req, res) => {
     const userId = req.user.id;
 
     const userData = await Users.findOne({ _id: userId });
-
     if (!userData) {
       return res.status(404).json({ success: false, errors: "User not found" });
     }
@@ -365,11 +372,13 @@ app.get("/get_products", async (req, res) => {
 // Creating Endpoint for placing an order
 app.post("/place_order", fetchUser, async (req, res) => {
   try {
-    const userId = req.user.id;
+    const { id, username } = req.user;
     const { products, total, address, phoneNumber } = req.body;
-
     const order = new Order({
-      user: userId,
+      user: {
+        userId: id,
+        username: username,
+      },
       products: products,
       total: total,
       address: address,
@@ -392,13 +401,42 @@ app.post("/place_order", fetchUser, async (req, res) => {
 app.get("/get_orders", fetchUser, async (req, res) => {
   try {
     const userId = req.user.id; // Lấy ID của người dùng từ middleware fetchUser
-    const orders = await Order.find({ user: userId });
+    const orders = await Order.find({ "user.userId": userId });
     res.json({ success: true, orders: orders });
   } catch (error) {
     console.error("Error fetching orders:", error);
     res.status(500).json({ success: false, errors: "Internal server error" });
   }
 });
+// Creating Endpoint for getting orders for admin
+app.get("/get_orders_admin", async (req, res) => {
+  try {
+    const orders = await Order.find({});
+    res.json({ success: true, orders: orders });
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ success: false, errors: "Internal server error" });
+  }
+});
+// Creating Endpoint for updating order status
+app.post("/update_order_status", async (req, res) => {
+  try {
+    const { orderId, status } = req.body;
+    await Order.findOneAndUpdate({ _id: orderId }, { status: status });
+    res.json({ success: true, message: "Order status updated successfully" });
+  } catch (error) {
+    console.error("Error updating order status:", error);
+    res.status(500).json({ success: false, errors: "Internal server error" });
+  }
+});
+// Creating Endpoint for deleting an order
+app.post("/delete_order", async (req, res) => {
+  await Order.findOneAndDelete({
+    _id: req.body.orderId,
+  });
+  res.json({ success: true, message: "Order deleted successfully" });
+});
+
 app.listen(port, (error) => {
   if (!error) {
     console.log("Server is running on port", port);
