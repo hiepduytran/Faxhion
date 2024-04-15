@@ -3,14 +3,16 @@ import "./AddProduct.css";
 import uploadArea from "../../assets/upload_area.svg";
 import toast, { Toaster } from "react-hot-toast";
 const AddProduct = () => {
-  const [image, setImage] = useState(false);
-  const [productDetails, setProductDetails] = useState({
+  const defaultProductDetails = {
     name: "",
     image: "",
     category: "women",
     new_price: "",
     old_price: "",
-  });
+    description: "",
+  };
+  const [image, setImage] = useState(false);
+  const [productDetails, setProductDetails] = useState(defaultProductDetails);
   const imgHandler = (e) => {
     setImage(e.target.files[0]);
   };
@@ -42,13 +44,15 @@ const AddProduct = () => {
         },
         body: JSON.stringify(product),
       }).then((res) =>
-        res
-          .json()
-          .then((data) =>
-            data.success
-              ? toast.success("Product Added Successfully")
-              : toast.error("Failed to Add Product")
-          )
+        res.json().then((data) => {
+          if (data.success) {
+            toast.success("Product Added Successfully");
+            setProductDetails(defaultProductDetails);
+            setImage(false);
+          } else {
+            toast.error("Failed to Add Product");
+          }
+        })
       );
     }
   };
@@ -85,6 +89,15 @@ const AddProduct = () => {
             placeholder="Type here"
           />
         </div>
+      </div>
+      <div className="addproduct-itemfield">
+        <p>Description</p>
+        <textarea
+          value={productDetails.description}
+          onChange={changeHandler}
+          name="description"
+          placeholder="Type here"
+        />
       </div>
       <div className="addproduct-itemfield">
         <p>Product Category</p>

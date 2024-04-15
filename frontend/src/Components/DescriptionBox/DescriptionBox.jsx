@@ -1,6 +1,7 @@
 import React from "react";
 import "./DescriptionBox.css";
-const DescriptionBox = () => {
+const DescriptionBox = (props) => {
+  const { product } = props;
   return (
     <div className="descriptionbox">
       <div className="descriptionbox-navigator">
@@ -8,18 +9,7 @@ const DescriptionBox = () => {
         <div className="descriptionbox-nav-box fade">Reviews (122)</div>
       </div>
       <div className="descriptionbox-description">
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
-        </p>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
-        </p>
+        <p>{product.description}</p>
       </div>
     </div>
   );
