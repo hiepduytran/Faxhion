@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
+const { type } = require("os");
 
 app.use(express.json()); // for parsing application/json
 app.use(cors()); // for enabling CORS
@@ -121,7 +122,7 @@ const Order = mongoose.model("Order", {
   products: [
     {
       productId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Number,
         ref: "Product",
       },
       name: {
@@ -158,6 +159,43 @@ const Order = mongoose.model("Order", {
     type: String,
     enum: ["pending", "processing", "completed"],
     default: "pending",
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+// Schema for Creating Reviews
+const Review = mongoose.model("Review", {
+  user: {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+  },
+  productId: {
+    type: Number,
+    ref: "Product",
+    required: true,
+  },
+  rating: {
+    type: Number,
+    required: true,
+    min: 1,
+    max: 5,
+  },
+  comment: {
+    type: String,
+    required: true,
+  },
+  approved: {
+    type: Boolean,
+    default: false,
   },
   date: {
     type: Date,
@@ -439,6 +477,49 @@ app.post("/delete_order", async (req, res) => {
     _id: req.body.orderId,
   });
   res.json({ success: true, message: "Order deleted successfully" });
+});
+
+// Creating Endpoint for adding a review
+app.post("/product/:productId/add_review", fetchUser, async (req, res) => {
+  try {
+    const { id, username } = req.user;
+    const { rating, comment } = req.body;
+    const productId = req.params.productId;
+
+    const review = new Review({
+      user: {
+        userId: id,
+        username: username,
+      },
+      productId: productId,
+      rating: rating,
+      comment: comment,
+    });
+
+    await review.save();
+
+    res.json({
+      success: true,
+      message: "Review added successfully",
+      // review: review,
+    });
+  } catch (error) {
+    console.error("Error adding review:", error);
+    res.status(500).json({ success: false, errors: "Internal server error" });
+  }
+});
+
+// Creating Endpoint for getting reviews with productId
+app.get("/product/:productId/reviews", async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const reviews = await Review.find({ productId: productId });
+
+    res.json({ success: true, reviews: reviews });
+  } catch (error) {
+    console.error("Error fetching reviews:", error);
+    res.status(500).json({ success: false, errors: "Internal server error" });
+  }
 });
 
 app.listen(port, (error) => {

@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
 import "./ProductDisplay.css";
-import star_icon from "../Assets/star_icon.png";
-import star_dull_icon from "../Assets/star_dull_icon.png";
 import { ShopContext } from "../../Context/ShopContext";
 import toast, { Toaster } from "react-hot-toast";
+import { FaStar } from "react-icons/fa";
 
 const ProductDisplay = (props) => {
-  const { product } = props;
+  const { product, reviews, totalReviews } = props;
   const { handleAddToCart } = useContext(ShopContext);
-
+  const totalRating = reviews.reduce((acc, review) => {
+    return Math.ceil((acc + review.rating) / totalReviews);
+  }, 0);
   const addToCart = (productId) => {
     const authToken = localStorage.getItem("auth-token");
     if (!authToken) {
@@ -34,12 +35,19 @@ const ProductDisplay = (props) => {
       <div className="productdisplay-right">
         <h1>{product.name}</h1>
         <div className="productdisplay-right-stars">
-          <img src={star_icon} alt="" />
-          <img src={star_icon} alt="" />
-          <img src={star_icon} alt="" />
-          <img src={star_icon} alt="" />
-          <img src={star_dull_icon} alt="" />
-          <p>122</p>
+          {[...Array(5)].map((_, i) => {
+            const currentRating = i + 1;
+            return (
+              <label key={i}>
+                <input type="radio" name="rating" value={currentRating} />
+                <FaStar
+                  className="star"
+                  color={currentRating <= totalRating ? "#ffc107" : "#e4e5e9"}
+                />
+              </label>
+            );
+          })}
+          <p>{totalReviews}</p>
         </div>
         <div className="productdisplay-right-prices">
           <div className="productdisplay-right-price-old">

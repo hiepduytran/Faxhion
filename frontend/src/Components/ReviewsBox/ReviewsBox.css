@@ -1,0 +1,56 @@
+input[type=radio] {
+    display: none;
+}
+.reviews-container {
+    margin-bottom: 20px;
+  }
+  
+  .review {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .review h3 {
+    margin: 0;
+    font-size: 16px;
+  }
+  
+  .review p {
+    margin: 5px 0;
+  }
+  
+  .stars {
+    margin-top: 5px;
+  }
+  
+  .star {
+    cursor: pointer;
+  }
+  
+  textarea {
+    width: 100%;
+    height: 100px;
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  
+  .submit-review {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .submit-review:hover {
+    background-color: #0056b3;
+  }
+  .my-review {
+    margin-top: 40px;
+  }
+  
