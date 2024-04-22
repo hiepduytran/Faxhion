@@ -1,4 +1,3 @@
-import React from "react";
 import "./Admin.css";
 import { Routes, Route } from "react-router-dom";
 import Sidebar from "../../Components/Sidebar/Sidebar";

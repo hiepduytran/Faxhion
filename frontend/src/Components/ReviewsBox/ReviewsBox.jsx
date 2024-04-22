@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import "./ReviewsBox.css";
+import toast, { Toaster } from "react-hot-toast";
 
 const ReviewsBox = (props) => {
   const { product, reviews, fetchReviews } = props;
@@ -41,10 +42,12 @@ const ReviewsBox = (props) => {
       if (!response.ok) {
         throw new Error("Failed to submit review");
       }
+      toast.success("Review submitted successfully");
       fetchReviews();
       setRating(null);
       setComment("");
     } catch (error) {
+      toast.error("Failed to submit review");
       console.error("Error submitting review:", error);
     }
   };
@@ -78,6 +81,7 @@ const ReviewsBox = (props) => {
   }); // some dựa vào kết quả trả về của hàm callback, nếu có ít nhất 1 phần tử thỏa mãn thì trả về true, ngược lại trả về false
   return (
     <div>
+      <Toaster />
       <div className="reviews-container">
         {reviews.map((review) => (
           <div key={review._id} className="review">

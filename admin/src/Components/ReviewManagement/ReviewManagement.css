@@ -3,7 +3,7 @@ ul {
     padding-left: 0px;
   }
   
-.order-management {
+.review-management {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,9 +14,10 @@ ul {
     border-radius: 6px;
     background-color: white;
 }
-.ordermanagement-format-main {
+.reviewmanagement-format-main {
     display: grid;
-    grid-template-columns: 3fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 3fr 1fr 1fr 1fr 6fr 1fr 1fr 1fr;
+    word-break: break-all;
     gap: 10px;
     width: 100%;
     padding: 20px 0px;
@@ -24,18 +25,18 @@ ul {
     font-size: 15px;
     font-weight: 600;
 }
-.ordermanagement-format {
+.reviewmanagement-format {
     align-items: center;
     font-weight: 500;
 }
-.ordermanagement-product-icon{
+.reviewmanagement-product-icon{
     height: 80px;
 }
-.ordermanagement-remove-icon{
+.reviewmanagement-remove-icon{
     cursor: pointer;
     margin: auto;
 }
-.ordermanagement-allproducts{
+.reviewmanagement-allproducts{
     overflow-y: auto;
 }
 @media (max-width: 800px) {
@@ -46,12 +47,12 @@ ul {
         padding: 10px 30px;
         margin: 20px auto;
     }
-    .ordermanagement-format-main{
+    .reviewmanagement-format-main{
         padding: 15px 0px;
         color: #454545;
         font-size: 12px;
     }
-    .ordermanagement-product-icon{
+    .reviewmanagement-product-icon{
         height: 60px;
     }
 }

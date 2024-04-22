@@ -23,8 +23,9 @@ const Product = () => {
         throw new Error("Failed to fetch reviews");
       }
       const data = await response.json();
-      setReviews(data.reviews);
-      setTotalReviews(data.reviews.length);
+      const approvedReviews = data.reviews.filter((review) => review.approved);
+      setReviews(approvedReviews);
+      setTotalReviews(approvedReviews.length);
     } catch (error) {
       console.error("Error fetching reviews:", error);
     }

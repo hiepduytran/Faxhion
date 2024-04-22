@@ -1,136 +1,123 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./ReviewManagement.css";
 import cross_icon from "../../assets/cross_icon.png";
 
 const ReviewManagement = () => {
-  const [orders, setOrders] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [updatedStatus, setUpdatedStatus] = useState({});
   const [edit, setEdit] = useState(null);
 
-  const fetchAllOrders = async () => {
-    await fetch("http://localhost:4000/get_orders_admin")
+  const fetchAllReviews = async () => {
+    await fetch("http://localhost:4000/get_reviews")
       .then((res) => res.json())
       .then((data) => {
-        setOrders(data.orders);
+        setReviews(data.reviews);
       });
   };
 
-  const updateOrderStatus = async (orderId, status) => {
-    await fetch("http://localhost:4000/update_order_status", {
+  const updateReviewStatus = async (reviewId, approved) => {
+    await fetch("http://localhost:4000/approve_review", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        orderId: orderId,
-        status: status,
+        reviewId: reviewId,
+        approved: approved,
       }),
     });
-    await fetchAllOrders();
+    await fetchAllReviews();
     alert("Status updated successfully");
     setEdit(null);
   };
 
-  const removeOrder = async (orderId) => {
-    await fetch("http://localhost:4000/delete_order", {
+  const removeReview = async (reviewId) => {
+    await fetch("http://localhost:4000/delete_review", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        orderId: orderId,
+        reviewId: reviewId,
       }),
     });
-    setOrders(
-      orders.filter((order) => {
-        return order._id !== orderId;
+    setReviews(
+      reviews.filter((review) => {
+        return review._id !== reviewId;
       })
-    );
-    await fetchAllOrders();
-    alert("Order removed successfully");
+    ); // return all reviews except the one that was deleted
+    await fetchAllReviews();
+    alert("Review removed successfully");
   };
 
   useEffect(() => {
-    fetchAllOrders();
+    fetchAllReviews();
   }, []);
 
-  const onStatusChange = (value, orderId) => {
-    setUpdatedStatus({ orderId, status: value });
+  const onStatusChange = (value, reviewId) => {
+    setUpdatedStatus({ reviewId, approved: value });
   };
 
   const handleUpdateStatus = async () => {
-    if (updatedStatus.orderId && updatedStatus.status) {
-      await updateOrderStatus(updatedStatus.orderId, updatedStatus.status);
+    if (updatedStatus.reviewId && updatedStatus.approved) {
+      await updateReviewStatus(updatedStatus.reviewId, updatedStatus.approved);
       setUpdatedStatus({});
     }
   };
-  const handleEdit = (orderId) => {
-    setEdit(orderId);
+  const handleEdit = (reviewId) => {
+    setEdit(reviewId);
   };
   return (
-    <div className="order-management">
-      <h1>Order Management</h1>
-      <div className="ordermanagement-format-main">
+    <div className="review-management">
+      <h1>Review Management</h1>
+      <div className="reviewmanagement-format-main">
         <p>ID</p>
         <p>Username</p>
-        <p>Product</p>
-        <p>Total Price</p>
-        <p>Address</p>
-        <p>Phone Number</p>
+        <p>ProductID</p>
+        <p>Rating</p>
+        <p>Comment</p>
         <p>Status</p>
         <p>Remove</p>
       </div>
-      <div className="ordermanagement-allproducts">
+      <div className="reviewmanagement-allproducts">
         <hr />
-        {[...orders].reverse().map((order, index) => {
+        {[...reviews].reverse().map((review, index) => {
           return (
             <div key={index}>
-              <div className="ordermanagement-format-main ordermanagement-format">
-                <p>{order._id}</p>
-                <p>{order.user.username}</p>
-                <ul>
-                  {order.products.map((product, index) => {
+              <div className="reviewmanagement-format-main reviewmanagement-format">
+                <p>{review._id}</p>
+                <p>{review.user.username}</p>
+                {/* <ul>
+                  {review.products.map((product, index) => {
                     return <li key={index}>{product.name}</li>;
                   })}
-                </ul>
-                <p>{order.total}</p>
-                <p>{order.address}</p>
-                <p>{order.phoneNumber}</p>
+                </ul> */}
+                <p>{review.productId}</p>
+                <p>{review.rating}</p>
+                <p>{review.comment}</p>
                 <p>
                   <select
                     name="status"
                     id="status"
-                    onChange={(e) => onStatusChange(e.target.value, order._id)}
-                    disabled={edit !== order._id}
+                    onChange={(e) => onStatusChange(e.target.value, review._id)}
+                    disabled={edit !== review._id}
                   >
-                    <option
-                      value="pending"
-                      selected={order.status === "pending"}
-                    >
-                      Pending
+                    <option value="true" selected={review.approved === true}>
+                      Approved
                     </option>
-                    <option
-                      value="processing"
-                      selected={order.status === "processing"}
-                    >
-                      Processing
-                    </option>
-                    <option
-                      value="completed"
-                      selected={order.status === "completed"}
-                    >
-                      Completed
+                    <option value="false" selected={review.approved === false}>
+                      Disapproved
                     </option>
                   </select>
-                  <button onClick={() => handleEdit(order._id)}>Edit</button>
+                  <button onClick={() => handleEdit(review._id)}>Edit</button>
                   <button onClick={handleUpdateStatus}>Update</button>
                 </p>
                 <img
-                  className="ordermanagement-remove-icon"
+                  className="reviewmanagement-remove-icon"
                   src={cross_icon}
-                  onClick={() => removeOrder(order._id)}
+                  onClick={() => removeReview(review._id)}
                   alt=""
                 />
               </div>

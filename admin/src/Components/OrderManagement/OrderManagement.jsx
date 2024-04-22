@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./OrderManagement.css";
 import cross_icon from "../../assets/cross_icon.png";
 

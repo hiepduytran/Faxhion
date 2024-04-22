@@ -16,9 +16,9 @@ const Shop = () => {
 
   return (
     <div>
-      <Link to={"/order_detail"} className="order-list-button">
+      {/* <Link to={"/order_detail"} className="order-list-button">
         Go To Order List
-      </Link>
+      </Link> */}
 
       <Hero scrollToNewCollections={scrollToNewCollections} />
       <Popular />

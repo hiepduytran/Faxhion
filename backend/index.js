@@ -41,6 +41,14 @@ app.post("/upload", upload.single("product"), (req, res) => {
   });
 });
 
+// Creating Upload Endpoint for user avatar
+app.post("/upload_avatar", upload.single("avatar"), (req, res) => {
+  res.json({
+    success: true,
+    avatar_url: `http://localhost:${port}/images/${req.file.filename}`,
+  });
+});
+
 // Schema for Creating Products
 const Product = mongoose.model("Product", {
   id: {
@@ -84,6 +92,10 @@ const Product = mongoose.model("Product", {
 const Users = mongoose.model("Users", {
   username: {
     type: String,
+  },
+  avatar_url: {
+    type: String,
+    default: "http://localhost:4000/images/default_avatar.jpg",
   },
   email: {
     type: String,
@@ -339,7 +351,35 @@ app.post("/update_user_data", fetchUser, async (req, res) => {
     res.status(500).json({ success: false, errors: "Internal server error" });
   }
 });
-
+// Creating Endpoint to update user data full
+app.post("/update_user_data_full", fetchUser, async (req, res) => {
+  try {
+    // Lấy thông tin người dùng từ yêu cầu
+    const { username, avatar_url, email, password, phoneNumber, address } =
+      req.body;
+    // Lấy ID của người dùng từ middleware fetchUser
+    const userId = req.user.id;
+    // Cập nhật thông tin người dùng trong cơ sở dữ liệu
+    await Users.findOneAndUpdate(
+      { _id: userId },
+      {
+        username: username,
+        avatar_url: avatar_url,
+        email: email,
+        password: password,
+        phoneNumber: phoneNumber,
+        address: address,
+      }
+    );
+    res.json({
+      success: true,
+      message: "User information updated successfully",
+    });
+  } catch (error) {
+    console.error("Error updating user information:", error);
+    res.status(500).json({ success: false, errors: "Internal server error" });
+  }
+});
 // Creating Endpoint for adding products in cartData
 app.post("/add_to_cart", fetchUser, async (req, res) => {
   // console.log(req.body, req.user);
@@ -520,6 +560,37 @@ app.get("/product/:productId/reviews", async (req, res) => {
     console.error("Error fetching reviews:", error);
     res.status(500).json({ success: false, errors: "Internal server error" });
   }
+});
+
+// Creating Endpoint for getting all reviews
+app.get("/get_reviews", async (req, res) => {
+  try {
+    const reviews = await Review.find({});
+    res.json({ success: true, reviews: reviews });
+  } catch (error) {
+    console.error("Error fetching reviews:", error);
+    res.status(500).json({ success: false, errors: "Internal server error" });
+  }
+});
+
+// Creating Endpoint for approving a review
+app.post("/approve_review", async (req, res) => {
+  try {
+    const { reviewId, approved } = req.body;
+    await Review.findOneAndUpdate({ _id: reviewId }, { approved: approved });
+    res.json({ success: true, message: "Review approved successfully" });
+  } catch (error) {
+    console.error("Error approving review:", error);
+    res.status(500).json({ success: false, errors: "Internal server error" });
+  }
+});
+
+// Creating Endpoint for deleting a review
+app.post("/delete_review", async (req, res) => {
+  await Review.findOneAndDelete({
+    _id: req.body.reviewId,
+  });
+  res.json({ success: true, message: "Review deleted successfully" });
 });
 
 app.listen(port, (error) => {

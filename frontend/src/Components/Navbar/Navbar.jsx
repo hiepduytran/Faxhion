@@ -9,9 +9,10 @@ import nav_dropdown from "../Assets/nav_dropdown.png";
 
 const Navbar = () => {
   const [menu, setMenu] = useState("shop");
-  const { getTotalCartItems } = useContext(ShopContext);
+  const { user, getTotalCartItems } = useContext(ShopContext);
   const location = useLocation();
   const menuRef = useRef(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   useEffect(() => {
     const path = location.pathname;
     if (path === "/") {
@@ -87,6 +88,31 @@ const Navbar = () => {
           <img src={cart_icon} alt="" />
         </Link>
         <div className="nav-cart-count">{getTotalCartItems()}</div>
+        <div
+          className="user-infor"
+          onClick={() => {
+            setIsDropdownOpen(!isDropdownOpen);
+          }}
+        >
+          <img src={user.avatar_url} alt="" />
+          {isDropdownOpen && (
+            <div className="dropdown-modal">
+              <div className="modal-content">
+                <ul>
+                  <Link
+                    style={{ textDecoration: "none" }}
+                    to="/update_information"
+                  >
+                    <li>Update Information</li>
+                  </Link>
+                  <Link style={{ textDecoration: "none" }} to="/order_detail">
+                    <li>Order List</li>
+                  </Link>
+                </ul>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

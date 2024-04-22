@@ -1,0 +1,72 @@
+.update-infor-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px; 
+    margin-bottom: 50px;
+  }
+  
+  .update-infor-container form {
+    width: 100%;
+    max-width: 400px; 
+  }
+  
+  .avatar-container {
+    margin-bottom: 20px; 
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;  
+  }
+  
+  .avatar-container img {
+    border-radius: 50%; 
+    border: 2px solid #ccc; 
+  }
+  
+  .btns {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; 
+  }
+  .btns.change-pw {
+    margin-top: 0px;
+  }
+  
+  .btns button {
+    padding: 10px 20px; 
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btns button:hover {
+    opacity: 0.6;
+  }
+  
+  .update-infor-container label {
+    margin-bottom: 5px; 
+  }
+  
+  .update-infor-container input {
+    padding: 8px;
+    margin-bottom: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .update-infor-container input[type="file"] {
+    margin-bottom: 20px; 
+  }
+  
+  p.error-mess {
+    color: red; 
+    margin-top: 5px; 
+    font-size: 14px;
+  }
+  

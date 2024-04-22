@@ -75,6 +75,45 @@
 .nav-dropdown {
     display: none;
 }
+.user-infor {
+    cursor: pointer;
+}
+.user-infor img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.dropdown-modal {
+    position: absolute;
+    top: 75px;
+    right: 150px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .modal-content ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .modal-content ul li {
+    padding: 10px;
+    cursor: pointer;
+    color: black;
+  }
+  
+  .modal-content ul li:hover {
+    background-color: #f0f0f0;
+  }
+  
 @media(max-width:1280px) {
     .navbar {
         padding: 12px 50px;

@@ -46,7 +46,7 @@ const LoginSignup = () => {
       .then((data) => (resData = data));
     if (resData.success) {
       localStorage.setItem("auth-token", resData.token);
-      toast.success("Account created successfully");
+      toast.success("Login successful");
       window.location.replace("/"); // Redirecting to home page
     } else {
       toast.error(resData.errors);
