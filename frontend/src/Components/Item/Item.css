@@ -3,6 +3,7 @@
 }
 .item img {
     width: 280px;
+    border-radius: 5px;
 }
 .item p {
     margin: 6px 0px;
