@@ -94,7 +94,9 @@ const Navbar = () => {
             setIsDropdownOpen(!isDropdownOpen);
           }}
         >
-          <img src={user.avatar_url} alt="" />
+          {Object.keys(user).length !== 0 && (
+            <img src={user.avatar_url} alt="" />
+          )}
           {isDropdownOpen && (
             <div className="dropdown-modal">
               <div className="modal-content">

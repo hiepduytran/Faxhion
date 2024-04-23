@@ -7,9 +7,9 @@ import { FaStar } from "react-icons/fa";
 const ProductDisplay = (props) => {
   const { product, reviews, totalReviews } = props;
   const { handleAddToCart } = useContext(ShopContext);
-  const totalRating = reviews.reduce((acc, review) => {
-    return Math.ceil((acc + review.rating) / totalReviews);
-  }, 0);
+  const totalRating = Math.ceil(
+    reviews.reduce((acc, review) => acc + review.rating, 0) / totalReviews
+  );
   const addToCart = (productId) => {
     const authToken = localStorage.getItem("auth-token");
     if (!authToken) {
@@ -58,10 +58,7 @@ const ProductDisplay = (props) => {
           </div>
         </div>
         <div className="productdisplay-right-description">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
+          {product.description}
         </div>
         <div className="productdisplay-right-size">
           <h1>Select Size</h1>
