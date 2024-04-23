@@ -278,7 +278,7 @@ app.get("/new_collection", async (req, res) => {
 // Creating EndPoint for popular in women section
 app.get("/popular_in_women", async (req, res) => {
   let products = await Product.find({ category: "women" }); // Getting all the products from the database
-  let popular_in_women = products.slice(0, 4);
+  let popular_in_women = products.slice(0, 4); // Getting the first 4 products from the array
   res.json(popular_in_women);
 });
 
