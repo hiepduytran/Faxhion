@@ -38,6 +38,7 @@ const UpdateInformation = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     mode: "onSubmit",
@@ -59,6 +60,7 @@ const UpdateInformation = () => {
     e.preventDefault();
     setEnableChangePassword(!enableChangePassword);
     setEnableEdit(!enableEdit);
+    reset();
   };
   const onSubmit = async (data) => {
     // console.log(data);
@@ -116,7 +118,7 @@ const UpdateInformation = () => {
           <div>
             <label htmlFor="username">Username:</label>
             <input
-              // disabled={enableEdit}
+              disabled={enableEdit}
               {...register("username")}
               id="username"
             />
@@ -143,7 +145,6 @@ const UpdateInformation = () => {
               <div>
                 <label htmlFor="password">Password:</label>
                 <input
-                  disabled={!enableChangePassword}
                   {...register("password")}
                   type="password"
                   id="password"
