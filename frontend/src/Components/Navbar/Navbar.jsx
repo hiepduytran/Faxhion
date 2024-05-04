@@ -71,14 +71,7 @@ const Navbar = () => {
       </ul>
       <div className="nav-login-cart">
         {localStorage.getItem("auth-token") ? (
-          <button
-            onClick={() => {
-              localStorage.removeItem("auth-token");
-              window.location.replace("/");
-            }}
-          >
-            Logout
-          </button>
+          ""
         ) : (
           <Link style={{ textDecoration: "none" }} to="/login">
             <button>Login</button>
@@ -94,7 +87,7 @@ const Navbar = () => {
             setIsDropdownOpen(!isDropdownOpen);
           }}
         >
-          {Object.keys(user).length !== 0 && (
+          {localStorage.getItem("auth-token") && (
             <img src={user.avatar_url} alt="" />
           )}
           {isDropdownOpen && (
@@ -110,6 +103,14 @@ const Navbar = () => {
                   <Link style={{ textDecoration: "none" }} to="/order_detail">
                     <li>Order List</li>
                   </Link>
+                  <div
+                    onClick={() => {
+                      localStorage.removeItem("auth-token");
+                      window.location.replace("/");
+                    }}
+                  >
+                    <li>Logout</li>
+                  </div>
                 </ul>
               </div>
             </div>

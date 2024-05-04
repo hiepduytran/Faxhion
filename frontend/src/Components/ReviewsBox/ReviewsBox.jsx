@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import "./ReviewsBox.css";
-import toast, { Toaster } from "react-hot-toast"; 
+import toast from "react-hot-toast";
 
 const ReviewsBox = (props) => {
   const { product, reviews, fetchReviews } = props;

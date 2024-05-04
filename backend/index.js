@@ -451,6 +451,14 @@ app.get("/get_products", async (req, res) => {
   // console.log("All products fetched");
 });
 
+// Creating API for searching products
+app.post("/search_products", async (req, res) => {
+  let products = await Product.find({
+    name: { $regex: req.body.search, $options: "i" },
+  });
+  res.json(products);
+});
+
 // Creating Endpoint for placing an order
 app.post("/place_order", fetchUser, async (req, res) => {
   try {

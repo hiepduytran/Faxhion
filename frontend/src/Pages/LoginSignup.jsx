@@ -166,13 +166,16 @@ const LoginSignup = () => {
           <input
             type="checkbox"
             name=""
-            id=""
+            id="policy"
             checked={disabled}
             onChange={() => {
               setDisabled(!disabled);
             }}
           />
-          <p>By continuing, i agree to the terms of use & privacy policy.</p>
+          {/* <p>By continuing, i agree to the terms of use & privacy policy.</p> */}
+          <label htmlFor="policy">
+            By continuing, i agree to the terms of use & privacy policy.
+          </label>
         </div>
       </div>
     </div>
