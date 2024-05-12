@@ -59,7 +59,8 @@ const SearchResults = () => {
           );
         })}
       </div>
-      <div className="searchresults-loadmore">Explore More</div>
+      {/* <div className="searchresults-loadmore">Explore More</div> */}
+      <div style={{ padding: "60px 0px" }}></div>
     </div>
   );
 };
