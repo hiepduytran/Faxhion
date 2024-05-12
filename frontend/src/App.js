@@ -14,6 +14,7 @@ import Checkout from "./Pages/Checkout";
 import OrderDetail from "./Components/OrderDetail/OrderDetail";
 import OrderList from "./Pages/OrderList";
 import UpdateInformation from "./Pages/UpdateInformation";
+import SearchResults from "./Components/SearchResults/SearchResults";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           <Route path="/order_detail" element={<OrderList />} />
           <Route path="/order_detail/:orderId" element={<OrderDetail />} />
           <Route path="/update_information" element={<UpdateInformation />} />
+          <Route path="/search_results" element={<SearchResults />} />
         </Routes>
         <Footer />
       </BrowserRouter>

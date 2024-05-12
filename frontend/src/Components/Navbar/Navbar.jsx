@@ -3,9 +3,10 @@ import "./Navbar.css";
 import logo from "../Assets/logo.png";
 import cart_icon from "../Assets/cart_icon.png";
 import { useState, useEffect, useContext, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ShopContext } from "../../Context/ShopContext";
 import nav_dropdown from "../Assets/nav_dropdown.png";
+import { useForm } from "react-hook-form";
 
 const Navbar = () => {
   const [menu, setMenu] = useState("shop");
@@ -13,6 +14,9 @@ const Navbar = () => {
   const location = useLocation();
   const menuRef = useRef(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
+  const [searchKeyWord, setSearchKeyWord] = useState("");
   useEffect(() => {
     const path = location.pathname;
     if (path === "/") {
@@ -28,6 +32,26 @@ const Navbar = () => {
   const dropdownToggle = (e) => {
     menuRef.current.classList.toggle("nav-menu-visible");
     e.target.classList.toggle("open");
+  };
+  const onSubmit = async (data) => {
+    const newSearchKeyWord = data.search;
+    setSearchKeyWord(newSearchKeyWord);
+    await fetch("http://localhost:4000/search_products", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        search: newSearchKeyWord,
+      }),
+    }).then((res) =>
+      res.json().then((data) => {
+        navigate("/search_results", {
+          state: { products: data, searchKeyWord: newSearchKeyWord },
+        });
+      })
+    );
   };
   return (
     <div className="navbar">
@@ -67,6 +91,15 @@ const Navbar = () => {
             Kids
           </Link>{" "}
           {menu === "kids" ? <hr /> : ""}
+        </li>
+        <li className="search-container">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <input
+              {...register("search", { required: true })}
+              placeholder="Search product..."
+            />
+            <button type="submit">Search</button>
+          </form>
         </li>
       </ul>
       <div className="nav-login-cart">
