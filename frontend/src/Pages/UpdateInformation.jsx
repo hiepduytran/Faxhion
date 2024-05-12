@@ -59,7 +59,7 @@ const UpdateInformation = () => {
   const enableChangePasswordHandler = (e) => {
     e.preventDefault();
     setEnableChangePassword(!enableChangePassword);
-    setEnableEdit(!enableEdit);
+    setEnableEdit(false);
     reset();
   };
   const onSubmit = async (data) => {
@@ -91,7 +91,8 @@ const UpdateInformation = () => {
       res.json().then((data) => {
         if (data.success) {
           toast.success("Information Updated Successfully");
-          setEnableEdit(!enableEdit);
+          setEnableChangePassword(false);
+          setEnableEdit(true);
         } else {
           toast.error("Failed to Update Information");
         }
