@@ -93,7 +93,7 @@
  *                     cartData:
  *                       type: object
  *                     date:
- *                       type: string
+ *                       type: date
  *                 message:
  *                   type: string
  *       401:
@@ -283,9 +283,7 @@
  *                   description:
  *                     type: string
  *                   date:
- *                     type: string
- *                   available:
- *                     type: boolean
+ *                     type: date
  *       500:
  *         description: Lỗi máy chủ nội bộ
  */
@@ -321,7 +319,7 @@
  *                   description:
  *                     type: string
  *                   date:
- *                     type: string
+ *                     type: date
  *                   available:
  *                     type: boolean
  *       500:
@@ -420,9 +418,7 @@
  *                   description:
  *                     type: string
  *                   date:
- *                     type: string
- *                   available:
- *                     type: boolean
+ *                     type: date
  *       500:
  *         description: Lỗi máy chủ nội bộ
  */
@@ -478,7 +474,7 @@
  *                   status:
  *                     type: string
  *                   date:
- *                     type: string
+ *                     type: date
  *       500:
  *         description: Lỗi máy chủ nội bộ
  */
@@ -625,8 +621,8 @@
  *                     type: number
  *                   comment:
  *                     type: string
- *                   createdAt:
- *                     type: string
+ *                   date:
+ *                     type: date
  *       500:
  *         description: Lỗi máy chủ nội bộ
  */
@@ -655,7 +651,7 @@
  *                     type: number
  *                   comment:
  *                     type: string
- *                   createdAt:
+ *                   date:
  *                     type: string
  *       500:
  *         description: Lỗi máy chủ nội bộ
