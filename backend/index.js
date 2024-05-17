@@ -6,7 +6,9 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
-const { type } = require("os");
+
+const swaggerSetup = require("./swaggerSetup");
+swaggerSetup(app);
 
 app.use(express.json()); // for parsing application/json
 app.use(cors()); // for enabling CORS
@@ -81,10 +83,6 @@ const Product = mongoose.model("Product", {
   date: {
     type: Date,
     default: Date.now,
-  },
-  available: {
-    type: Boolean,
-    default: true,
   },
 });
 
