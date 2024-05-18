@@ -514,6 +514,7 @@
  *         description: Lỗi máy chủ nội bộ
  */
 
+
 /**
  * @swagger
  * /delete_order:
@@ -524,26 +525,14 @@
  *       required: true
  *       content:
  *         application/json:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 orderId:
- *                   type: number
+ *           schema:
+ *             type: object
+ *             properties:
+ *               orderId:
+ *                 type: number
  *     responses:
  *       200:
  *         description: Đơn hàng đã được xóa thành công
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   description: true
- *                 message:
- *                   type: string
- *                   description: Order deleted successfully
  *       500:
  *         description: Lỗi máy chủ nội bộ
  */
