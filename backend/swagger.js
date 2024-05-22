@@ -20,6 +20,17 @@
  *     responses:
  *       200:
  *         description: Đăng ký thành công
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   description: Kết quả đăng ký
+ *                 token:
+ *                   type: string
+ *                   description: JWT token để xác thực các yêu cầu tiếp theo
  *       400:
  *         description: Email đã tồn tại hoặc dữ liệu không hợp lệ
  */
@@ -87,7 +98,7 @@
  *                     email:
  *                       type: string
  *                     phoneNumber:
- *                       type: string
+ *                       type: number
  *                     address:
  *                       type: string
  *                     cartData:
@@ -116,7 +127,7 @@
  *             type: object
  *             properties:
  *               phoneNumber:
- *                 type: string
+ *                 type: number
  *               address:
  *                 type: string
  *             required:
@@ -155,7 +166,7 @@
  *               password:
  *                 type: string
  *               phoneNumber:
- *                 type: string
+ *                 type: number
  *               address:
  *                 type: string
  *             required:
@@ -320,8 +331,6 @@
  *                     type: string
  *                   date:
  *                     type: date
- *                   available:
- *                     type: boolean
  *       500:
  *         description: Lỗi máy chủ nội bộ
  */
@@ -513,7 +522,6 @@
  *       500:
  *         description: Lỗi máy chủ nội bộ
  */
-
 
 /**
  * @swagger
